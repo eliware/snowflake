@@ -15,11 +15,20 @@
   - [CommonJS Example](#commonjs-example)
 - [API](#api)
 - [TypeScript](#typescript)
+- [Testing](#testing)
 - [License](#license)
 
 ## Features
 
+- Minimal, dependency-light Snowflake ID generator compatible with Discord-style bit layout.
+- BigInt-safe implementation to preserve full 64-bit IDs.
+- Works in both ESM and CommonJS environments.
+- Configurable epoch and worker ID via a factory function.
+- Includes TypeScript declarations and basic tests.
+
 ## Installation
+
+Install from npm:
 
 ```bash
 npm install @eliware/snowflake
@@ -30,36 +39,74 @@ npm install @eliware/snowflake
 ### ESM Example
 
 ```js
-// Example for ESM (module JS) usage
+// ESM (index.mjs)
+import generate, { createSnowflakeGenerator } from './index.mjs';
 
+// default generator (workerId: 0)
+console.log('id:', generate());
+
+// create a generator for a specific worker ID
+const gen = createSnowflakeGenerator({ workerId: 1 });
+console.log('worker 1 id:', gen());
 ```
 
 ### CommonJS Example
 
 ```js
-// Example for CommonJS usage
+// CommonJS (index.cjs)
+const generate = require('./index.cjs');
+const { createSnowflakeGenerator } = require('./index.cjs');
 
+console.log('id:', generate());
+
+const gen = createSnowflakeGenerator({ workerId: 2 });
+console.log('worker 2 id:', gen());
 ```
 
 ## API
 
-### method1 signature
+### createSnowflakeGenerator(options?) => () => string
 
-description
+- options.epoch: number | bigint (default: 1420070400000) — base epoch in milliseconds (Discord epoch: 2015-01-01T00:00:00.000Z).
+- options.workerId: number (default: 0) — numeric worker/node ID (10-bit value).
 
-### method2 signature
+Returns a zero-argument function that generates a new Snowflake ID (as a decimal string) each call.
 
-description
+Behavior notes:
+- Timestamp uses (Date.now() - epoch) shifted left 22 bits.
+- Worker ID occupies 10 bits, sequence counter occupies 12 bits.
+- The generator waits for the next millisecond if more than 4095 IDs are requested in the same millisecond.
 
-... etc ...
+### Default export: generate()
+
+A ready-to-use generator (workerId 0). It returns a decimal string representation of the Snowflake ID.
 
 ## TypeScript
 
-Type definitions are included:
+Type definitions are included (index.d.ts). Example signatures:
 
 ```ts
-
+export function createSnowflakeGenerator(options?: { epoch?: number | bigint; workerId?: number }): () => string;
+export const generate: () => string;
+export default generate;
 ```
+
+## Testing
+
+A small Jest test suite is included (index.test.mjs / index.test.cjs) that verifies:
+
+- Generated IDs are numeric strings parseable to BigInt.
+- Consecutive IDs are monotonically increasing.
+- Worker ID bits are encoded correctly.
+- Timestamp portion decodes to a recent time.
+
+Run tests with:
+
+```bash
+npm test
+```
+
+---
 
 ## Support
 
