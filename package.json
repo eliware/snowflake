@@ -1,61 +1,62 @@
 {
-    "name": "@eliware/snowflake",
-    "type": "module",
-    "version": "1.1.1",
-    "description": "A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-safe generators for ESM and CommonJS with configurable epoch and worker ID.",
-    "main": "index.cjs",
-    "module": "index.mjs",
-    "types": "index.d.ts",
-    "files": [
-        "index.mjs",
-        "index.cjs",
-        "index.d.ts",
-        "README.md",
-        "LICENSE"
-    ],
-    "exports": {
-        ".": {
-            "import": "./index.mjs",
-            "require": "./index.cjs",
-            "types": "./index.d.ts"
-        }
-    },
-    "scripts": {
-        "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/eliware/snowflake.git"
-    },
-    "keywords": [
-        "snowflake",
-        "snowflake-id",
-        "id-generator",
-        "discord",
-        "unique-id",
-        "bigint",
-        "nodejs",
-        "esm",
-        "cjs"
-    ],
-    "author": "Eli Sterling, eliware.org <eli@eliware.org>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/eliware/snowflake/issues"
-    },
-    "homepage": "https://github.com/eliware/snowflake#readme",
-    "devDependencies": {
-        "jest": "^30.0.4"
-    },
-    "jest": {
-        "testEnvironment": "node",
-        "testMatch": [
-            "**/?(*.)+(spec|test).[jt]s?(x)",
-            "**/?(*.)+(spec|test).mjs",
-            "**/?(*.)+(spec|test).cjs"
-        ]
-    },
-    "dependencies": {
-        "@eliware/common": "^1.1.1"
+  "name": "@eliware/snowflake",
+  "type": "module",
+  "version": "1.1.1",
+  "description": "A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-safe generators for ESM and CommonJS with configurable epoch and worker ID.",
+  "main": "index.cjs",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.mjs",
+    "index.cjs",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     }
+  },
+  "scripts": {
+    "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent --coverage",
+    "test:gaps": "npm test -- --coverageReporters=text 2>&1 | awk '!/100%/'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliware/snowflake.git"
+  },
+  "keywords": [
+    "snowflake",
+    "snowflake-id",
+    "id-generator",
+    "discord",
+    "unique-id",
+    "bigint",
+    "nodejs",
+    "esm",
+    "cjs"
+  ],
+  "author": "Eli Sterling, eliware.org <eli@eliware.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eliware/snowflake/issues"
+  },
+  "homepage": "https://github.com/eliware/snowflake#readme",
+  "devDependencies": {
+    "jest": "^30.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)",
+      "**/?(*.)+(spec|test).mjs",
+      "**/?(*.)+(spec|test).cjs"
+    ]
+  },
+  "dependencies": {
+    "@eliware/common": "^1.1.1"
+  }
 }
