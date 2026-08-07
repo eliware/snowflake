@@ -1,4 +1,4 @@
-import generate, { constants, createSnowflakeGenerator } from './index.mjs';
+import generate, { constants, createSnowflakeGenerator } from '../index.mjs';
 
 test('default generator returns positive decimal strings', () => {
   expect(BigInt(generate())).toBeGreaterThan(0n);

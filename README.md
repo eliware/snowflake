@@ -14,6 +14,10 @@ A production-ready, BigInt-safe Snowflake ID generator for Node.js. IDs are retu
 - Range validation and timestamp-capacity checks.
 - Native ESM, TypeScript declarations, and no runtime dependencies.
 
+## Requirements
+
+- Node.js 26 or newer
+
 ## Installation
 
 ```bash
@@ -50,13 +54,27 @@ For Kubernetes, assign each replica a stable `workerId` from configuration. `pro
 
 The exports `generate` and `snowflake` are ready-to-use default generators. `constants` exposes the bit layout and default epoch.
 
+## TypeScript
+
+TypeScript declarations are included for all public exports and options.
+
+## Errors / Troubleshooting
+
+Configuration values outside the supported ranges throw `RangeError`; a non-function clock throws `TypeError`; timestamps before the epoch or beyond Snowflake capacity throw `RangeError`. Configure unique `workerId` and `processId` values across distributed generators.
+
 ## Testing and linting
 
 ```bash
 npm test
 npm run test:gaps
 npm run lint
+npm run typecheck
+npm run pack
 ```
+
+## Security
+
+Snowflake IDs are unique identifiers, not secrets. Do not use them as authentication tokens or assume they conceal timestamp and deployment information.
 
 ## License
 
