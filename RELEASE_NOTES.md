@@ -1,5 +1,17 @@
 # Release Notes
 
+## 1.1.4 — August 7, 2026
+
+### Changed
+
+- Removed the unused `@eliware/common` runtime dependency.
+- Reduced the installed dependency tree and regenerated the npm lockfile.
+- Added manual GitHub Actions workflow dispatch support.
+
+### Verification
+
+- npm audit: 0 vulnerabilities.
+
 ## 1.1.2
 
 ### Added
