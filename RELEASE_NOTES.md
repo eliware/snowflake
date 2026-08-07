@@ -1,5 +1,13 @@
 # Release Notes
 
+## 1.1.5 — August 7, 2026
+
+- Aligned repository layout, scripts, CI, documentation, and package contents with Eliware library conventions.
+- Added TypeScript declaration checking and standardized package validation.
+- Moved tests under `tests/` and included a runnable `examples/` file in the package.
+- Removed the legacy `main` metadata from this ESM-only package.
+- Verification: tests, coverage, gap checks, lint, typecheck, smoke test, and package dry-run pass.
+
 ## 1.1.4 — August 7, 2026
 
 ### Changed
