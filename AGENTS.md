@@ -18,3 +18,7 @@ Run `npm test`, `npm run lint`, `npm run typecheck`, `npm audit --omit=dev --aud
 ## Changes
 
 Update README and declarations for API changes. Do not bump versions, tag, publish, or push unless explicitly requested.
+- Do not over-engineer simple tasks.
+- Do not guess when confused.
+- Do not make random, pointless changes.
+- Check your own work before saying you're done.
