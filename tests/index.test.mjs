@@ -14,6 +14,14 @@ test('encodes worker, process, timestamp, and sequence', () => {
   expect(second & 4095n).toBe(1n);
 });
 
+test('accepts BigInt configuration and preserves a custom epoch', () => {
+  const gen = createSnowflakeGenerator({ epoch: 1000n, workerId: 31n, processId: 31n, now: () => 1002n });
+  const id = BigInt(gen());
+  expect(id >> 22n).toBe(2n);
+  expect((id >> 17n) & 31n).toBe(31n);
+  expect((id >> 12n) & 31n).toBe(31n);
+});
+
 test('clamps a clock rollback', () => {
   let now = 2000;
   const gen = createSnowflakeGenerator({ epoch: 1000, now: () => now });
@@ -23,12 +31,10 @@ test('clamps a clock rollback', () => {
   expect(second).toBeGreaterThan(first);
 });
 
-test('waits for the next millisecond after sequence overflow', () => {
-  let now = 1000;
-  let reads = 0;
-  const gen = createSnowflakeGenerator({ epoch: 1000, now: () => { reads += 1; return reads > 4097 ? 1001 : now; } });
-  for (let i = 0; i < 4097; i += 1) gen();
-  expect(BigInt(gen()) >> 22n).toBe(1n);
+test('fails fast when the clock is frozen at sequence overflow', () => {
+  const gen = createSnowflakeGenerator({ epoch: 1000, now: () => 1000 });
+  for (let i = 0; i < 4096; i += 1) gen();
+  expect(() => gen()).toThrow('clock must advance after sequence overflow');
 });
 
 test('rejects timestamps beyond the 42-bit capacity', () => {

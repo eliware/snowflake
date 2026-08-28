@@ -45,7 +45,7 @@
     },
     "homepage": "https://github.com/eliware/snowflake#readme",
     "devDependencies": {
-        "jest": "^30.4.2",
+        "jest": "^30.5.0",
         "typescript": "^7.0.2"
     },
     "jest": {
