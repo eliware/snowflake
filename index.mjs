@@ -57,10 +57,7 @@ export function createSnowflakeGenerator({
     if (timestamp === lastTimestamp) {
       sequence = (sequence + 1n) & SEQUENCE_MASK;
       if (sequence === 0n) {
-        timestamp = readTime();
-        if (timestamp <= lastTimestamp) {
-          throw new RangeError('clock must advance after sequence overflow');
-        }
+        throw new RangeError('sequence overflow; clock must advance before retrying');
       }
     } else {
       sequence = 0n;

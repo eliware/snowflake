@@ -22,6 +22,14 @@ test('accepts BigInt configuration and preserves a custom epoch', () => {
   expect((id >> 12n) & 31n).toBe(31n);
 });
 
+test('applies option defaults and accepts the timestamp boundary', () => {
+  expect(() => createSnowflakeGenerator({})()).not.toThrow();
+  expect(() => createSnowflakeGenerator({ epoch: 0 })()).not.toThrow();
+  expect(() => createSnowflakeGenerator({ workerId: 1 })()).not.toThrow();
+  expect(() => createSnowflakeGenerator({ processId: 1 })()).not.toThrow();
+  expect(() => createSnowflakeGenerator({ now: () => constants.epoch })()).not.toThrow();
+});
+
 test('clamps a clock rollback', () => {
   let now = 2000;
   const gen = createSnowflakeGenerator({ epoch: 1000, now: () => now });
@@ -34,7 +42,7 @@ test('clamps a clock rollback', () => {
 test('fails fast when the clock is frozen at sequence overflow', () => {
   const gen = createSnowflakeGenerator({ epoch: 1000, now: () => 1000 });
   for (let i = 0; i < 4096; i += 1) gen();
-  expect(() => gen()).toThrow('clock must advance after sequence overflow');
+  expect(() => gen()).toThrow('sequence overflow; clock must advance before retrying');
 });
 
 test('rejects timestamps beyond the 42-bit capacity', () => {
