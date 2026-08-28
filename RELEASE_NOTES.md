@@ -1,12 +1,16 @@
 # Release Notes
 
-## 2.0.0 — Unreleased
+## 2.0.0 — August 28, 2026
 
 - Adopted the shared `@eliware/test` harness for testing and linting with
   strict 100×4 coverage enforcement.
 - Modernized package metadata, documentation, package contents, and CI for
   Node.js `>=26`, including cross-platform validation and tag-only publishing.
 - Added production dependency auditing and repository-owned Knit validation.
+- Added fail-fast sequence-overflow handling and expanded BigInt, boundary, and
+  rollback coverage.
+- Removed obsolete Jest-result ignore configuration and added shared project
+  working rules.
 - Breaking: the standard `test` and `lint` scripts now delegate to
   `@eliware/test`.
 
