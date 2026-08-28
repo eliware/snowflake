@@ -1,10 +1,12 @@
 name: Node.js CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     tags: ['v*']
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -14,12 +16,14 @@ jobs:
     name: Validate (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         node-version: [26.x]
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
@@ -39,11 +43,15 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Use Node.js 26
+        uses: actions/setup-node@v6
         with:
           node-version: 26.x
           registry-url: https://registry.npmjs.org
       - run: npm ci
-      - run: npm publish --provenance
+      - name: Configure npm auth token
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
