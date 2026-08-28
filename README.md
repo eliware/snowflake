@@ -40,7 +40,11 @@ const replicaGenerator = createSnowflakeGenerator({
 console.log(replicaGenerator());
 ```
 
-For Kubernetes, assign each replica a stable `workerId` from configuration. `processId` defaults to `process.pid % 32`, but should be explicitly configured when process identity must be coordinated across hosts.
+For Kubernetes or other distributed deployments, assign each replica a stable
+`workerId` and coordinate `processId` values so that no two active generators
+share the same worker/process pair. `processId` defaults to `process.pid % 32`,
+but should be explicitly configured when process identity must be coordinated
+across hosts.
 
 ## API
 
@@ -53,7 +57,10 @@ For Kubernetes, assign each replica a stable `workerId` from configuration. `pro
 | `processId` | `process.pid % 32` | Process ID, from `0` to `31`. |
 | `now` | `Date.now` | Injectable millisecond clock. |
 
-The exports `generate` and `snowflake` are ready-to-use default generators. `constants` exposes the bit layout and default epoch.
+The exports `generate` and `snowflake` are ready-to-use default generators;
+both refer to the same generator. `constants` exposes the bit layout and
+default epoch. IDs are unique only when the configured worker/process identity
+is unique and the system clock is not permanently stalled.
 
 ## TypeScript
 
@@ -61,7 +68,12 @@ TypeScript declarations are included for all public exports and options.
 
 ## Errors / Troubleshooting
 
-Configuration values outside the supported ranges throw `RangeError`; a non-function clock throws `TypeError`; timestamps before the epoch or beyond Snowflake capacity throw `RangeError`. Configure unique `workerId` and `processId` values across distributed generators.
+Configuration values outside the supported ranges throw `RangeError`; a
+non-function clock throws `TypeError`; timestamps before the epoch or beyond
+Snowflake capacity throw `RangeError`. If more than 4096 IDs are requested in
+one millisecond, generation throws a `RangeError`; retry after the clock has
+advanced. Configure unique `workerId` and `processId` values across distributed
+generators.
 
 ## Testing and linting
 
@@ -72,6 +84,13 @@ npm run typecheck
 npm run audit
 npm run pack
 ```
+
+## Operations
+
+Use the same `epoch`, `workerId`, and `processId` configuration consistently
+for each generator instance. Persist IDs as decimal strings because Snowflake
+values can exceed JavaScript's safe integer range. The generator performs no
+filesystem or network I/O and does not require shutdown handling.
 
 ## Security
 
