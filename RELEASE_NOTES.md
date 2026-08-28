@@ -1,5 +1,15 @@
 # Release Notes
 
+## 2.0.0 — Unreleased
+
+- Adopted the shared `@eliware/test` harness for testing and linting with
+  strict 100×4 coverage enforcement.
+- Modernized package metadata, documentation, package contents, and CI for
+  Node.js `>=26`, including cross-platform validation and tag-only publishing.
+- Added production dependency auditing and repository-owned Knit validation.
+- Breaking: the standard `test` and `lint` scripts now delegate to
+  `@eliware/test`.
+
 ## 1.1.5 — August 7, 2026
 
 - Aligned repository layout, scripts, CI, documentation, and package contents with Eliware library conventions.

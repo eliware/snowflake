@@ -9,7 +9,7 @@ A production-ready, BigInt-safe Snowflake ID generator for Node.js. IDs are retu
 - Custom epoch; the default is `365662380000n` (`1981-08-03T04:53:00Z`).
 - 42-bit millisecond timestamp, 5-bit worker ID, 5-bit process ID, and 12-bit sequence.
 - Clock rollback protection and sequence overflow handling.
-- Sequence overflow fails fast if an injected clock does not advance.
+- Sequence overflow fails fast; callers can retry after the clock advances.
 - Configurable worker/process identity for distributed deployments.
 - Injectable clock for deterministic tests.
 - Range validation and timestamp-capacity checks.
@@ -67,9 +67,9 @@ Configuration values outside the supported ranges throw `RangeError`; a non-func
 
 ```bash
 npm test
-npm run test:gaps
 npm run lint
 npm run typecheck
+npm run audit
 npm run pack
 ```
 
