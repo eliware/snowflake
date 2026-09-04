@@ -11,6 +11,8 @@
   rollback coverage.
 - Removed obsolete Jest-result ignore configuration and added shared project
   working rules.
+- Reorganized production modules under `src/` with a mirrored module-level
+  test tree under `tests/`.
 - Breaking: the standard `test` and `lint` scripts now delegate to
   `@eliware/test`.
 

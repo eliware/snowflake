@@ -92,6 +92,9 @@ for each generator instance. Persist IDs as decimal strings because Snowflake
 values can exceed JavaScript's safe integer range. The generator performs no
 filesystem or network I/O and does not require shutdown handling.
 
+The implementation is organized under `src/`, with one mirrored test module
+under `tests/` for each production module.
+
 ## Security
 
 Snowflake IDs are unique identifiers, not secrets. Do not use them as authentication tokens or assume they conceal timestamp and deployment information.
