@@ -1,5 +1,7 @@
 # @eliware/snowflake
 
+Documentation: [docs](docs/README.md) · [specifications](specs/README.md) · [examples](examples/README.md)
+
 [![npm version](https://img.shields.io/npm/v/@eliware/snowflake.svg)](https://www.npmjs.com/package/@eliware/snowflake) [![build status](https://github.com/eliware/snowflake/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eliware/snowflake/actions)
 
 A production-ready, BigInt-safe Snowflake ID generator for Node.js. IDs are returned as decimal strings so they remain safe across JSON, databases, and JavaScript runtimes.
