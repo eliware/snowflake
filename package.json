@@ -51,7 +51,7 @@
     },
     "homepage": "https://github.com/eliware/snowflake#readme",
     "devDependencies": {
-        "@eliware/test": "^3.0.0",
+        "@eliware/test": "^6.0.1",
         "typescript": "^7.0.2"
     }
 }
