@@ -2,7 +2,7 @@
   "name": "@eliware/snowflake",
   "version": "12.0.0",
   "type": "module",
-  "description": "A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-safe generators with configurable epoch and worker ID.",
+  "description": "A Node.js Snowflake ID generator with BigInt support and a configurable epoch. Set epoch to 1420070400000n to decode timestamps with Discord's epoch.",
   "keywords": [
     "snowflake",
     "snowflake-id",

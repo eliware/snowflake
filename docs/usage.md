@@ -41,6 +41,7 @@ Pass an options object to `createSnowflakeGenerator`.
 Use the same epoch for all generators that create IDs for one application.
 Set the epoch from zero through the timestamp limit.
 Pass it as a safe integer number or a bigint.
+Set `epoch` to `1420070400000n` to decode timestamps with Discord's epoch.
 Assign a unique worker and process ID pair to each active generator.
 Set `processId` when several hosts or processes share worker IDs.
 The default process ID can repeat across hosts.
