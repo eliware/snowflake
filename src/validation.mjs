@@ -1,4 +1,4 @@
-import { PROCESS_MASK, WORKER_MASK } from './constants.mjs';
+import { PROCESS_MASK, WORKER_MASK } from "./constants.mjs";
 
 export function validatePart(value, name, mask) {
   const parsed = BigInt(value);
@@ -10,7 +10,7 @@ export function validatePart(value, name, mask) {
 
 export function validateIdentity(workerId, processId) {
   return {
-    worker: validatePart(workerId, 'workerId', WORKER_MASK),
-    processNumber: validatePart(processId, 'processId', PROCESS_MASK),
+    worker: validatePart(workerId, "workerId", WORKER_MASK),
+    processNumber: validatePart(processId, "processId", PROCESS_MASK),
   };
 }

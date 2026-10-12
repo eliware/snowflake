@@ -1,106 +1,118 @@
-# @eliware/snowflake
+# [![eliware.org](https://eliware.org/logos/brand.png)](https://discord.gg/M6aTR9eTwN)
 
-Documentation: [docs](docs/README.md) · [specifications](specs/README.md) · [examples](examples/README.md)
+## @eliware/snowflake [![npm](https://img.shields.io/npm/v/@eliware/snowflake)](https://www.npmjs.com/package/@eliware/snowflake) [![License](https://img.shields.io/github/license/eliware/snowflake)](https://github.com/eliware/snowflake/blob/main/LICENSE) [![CI](https://github.com/eliware/snowflake/actions/workflows/ci.yaml/badge.svg)](https://github.com/eliware/snowflake/actions/workflows/ci.yaml)
 
-[![npm version](https://img.shields.io/npm/v/@eliware/snowflake.svg)](https://www.npmjs.com/package/@eliware/snowflake) [![build status](https://github.com/eliware/snowflake/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eliware/snowflake/actions)
+A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-safe generators with configurable epoch and worker ID.
 
-A production-ready, BigInt-safe Snowflake ID generator for Node.js. IDs are returned as decimal strings so they remain safe across JSON, databases, and JavaScript runtimes.
+## Table of Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Development](#development)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
+- [API](#api)
+- [Packaging](#packaging)
+- [Examples](#examples)
+- [Support](#support)
+- [Links](#links)
+- [License](#license)
 
 ## Features
 
-- Custom epoch; the default is `365662380000n` (`1981-08-03T04:53:00Z`).
-- 42-bit millisecond timestamp, 5-bit worker ID, 5-bit process ID, and 12-bit sequence.
-- Clock rollback protection and sequence overflow handling.
-- Sequence overflow fails fast; callers can retry after the clock advances.
-- Configurable worker/process identity for distributed deployments.
-- Injectable clock for deterministic tests.
-- Range validation and timestamp-capacity checks.
-- Native ESM, TypeScript declarations, and no runtime dependencies.
+Create unique, time-ordered IDs with a configurable epoch and machine identity.
+The generator returns decimal strings that preserve all ID bits in JavaScript and JSON.
+It protects against clock rollback and reports sequence overflow.
 
 ## Requirements
 
-- Node.js 26 or newer
+Use Node.js 26 or later.
+Assign a unique worker and process ID pair to each active generator.
 
-## Installation
+## Setup
 
-```bash
+Install the package from npm:
+
+```text
 npm install @eliware/snowflake
 ```
 
 ## Usage
 
+Create a generator with a stable identity:
+
 ```js
-import generate, { createSnowflakeGenerator } from '@eliware/snowflake';
+import { createSnowflakeGenerator } from "@eliware/snowflake";
 
+const generate = createSnowflakeGenerator({ workerId: 3, processId: 7 });
 console.log(generate());
-
-// Set a unique worker ID for each replica or node.
-const replicaGenerator = createSnowflakeGenerator({
-  workerId: 3,
-  processId: 7,
-});
-console.log(replicaGenerator());
 ```
 
-For Kubernetes or other distributed deployments, assign each replica a stable
-`workerId` and coordinate `processId` values so that no two active generators
-share the same worker/process pair. `processId` defaults to `process.pid % 32`,
-but should be explicitly configured when process identity must be coordinated
-across hosts.
+The default epoch is `365662380000n`. Configure `processId` when identity must remain unique across hosts.
+See [release notes](RELEASE_NOTES.md) for changes by version.
 
-## API
+## Development
 
-`createSnowflakeGenerator(options?)` returns a function that generates decimal-string IDs.
+Install locked dependencies with `npm ci`.
+Use native ESM and keep implementation modules under `src/`.
+Read [documentation](docs/README.md) and [specifications](specs/README.md) before changes.
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `epoch` | `365662380000n` | Unix epoch in milliseconds. |
-| `workerId` | `0` | Worker/node ID, from `0` to `31`. |
-| `processId` | `process.pid % 32` | Process ID, from `0` to `31`. |
-| `now` | `Date.now` | Injectable millisecond clock. |
+## Testing
 
-The exports `generate` and `snowflake` are ready-to-use default generators;
-both refer to the same generator. `constants` exposes the bit layout and
-default epoch. IDs are unique only when the configured worker/process identity
-is unique and the system clock is not permanently stalled.
+Run `npm test` for all required checks.
+Run `npm run lint`, `npm run format:check`, `npm run audit`, `npm run typecheck`, or `npm run pack` for focused checks.
+Run `npm run format` to format maintained files.
 
-## TypeScript
+## Troubleshooting
 
-TypeScript declarations are included for all public exports and options.
-
-## Errors / Troubleshooting
-
-Configuration values outside the supported ranges throw `RangeError`; a
-non-function clock throws `TypeError`; timestamps before the epoch or beyond
-Snowflake capacity throw `RangeError`. If more than 4096 IDs are requested in
-one millisecond, generation throws a `RangeError`; retry after the clock has
-advanced. Configure unique `workerId` and `processId` values across distributed
-generators.
-
-## Testing and linting
-
-```bash
-npm test
-npm run lint
-npm run typecheck
-npm run audit
-npm run pack
-```
-
-## Operations
-
-Use the same `epoch`, `workerId`, and `processId` configuration consistently
-for each generator instance. Persist IDs as decimal strings because Snowflake
-values can exceed JavaScript's safe integer range. The generator performs no
-filesystem or network I/O and does not require shutdown handling.
-
-The implementation is organized under `src/`, with one mirrored test module
-under `tests/` for each production module.
+The generator throws `RangeError` for invalid IDs, timestamps, or sequence overflow.
+Retry sequence overflow after the clock advances.
+See [troubleshooting](docs/troubleshooting.md) for more details.
 
 ## Security
 
-Snowflake IDs are unique identifiers, not secrets. Do not use them as authentication tokens or assume they conceal timestamp and deployment information.
+Treat IDs as identifiers, not secrets.
+IDs expose time and deployment information.
+Do not use IDs as authentication tokens.
+
+## API
+
+`createSnowflakeGenerator(options)` returns a function that creates decimal-string IDs.
+Options are `epoch`, `workerId`, `processId`, and `now`.
+The default generator is exported as `generate`, `snowflake`, and the default export.
+The `constants` export provides the default epoch and bit sizes.
+
+## Packaging
+
+The package provides native ESM code and TypeScript declarations.
+It has no runtime dependencies.
+The package supports Node.js 26 and later.
+
+## Examples
+
+Run the [native ESM example](examples/example.mjs) with Node.js 26 or later.
+See [examples](examples/README.md) for the example index.
+
+## Support
+
+For help, questions, or to chat with the author and community, visit:
+
+[![Discord](https://eliware.org/logos/discord_96.png)](https://discord.gg/M6aTR9eTwN)[![eliware.org](https://eliware.org/logos/eliware_96.png)](https://discord.gg/M6aTR9eTwN)
+
+**[eliware.org on Discord](https://discord.gg/M6aTR9eTwN)**
+
+## Links
+
+- [Home Page](https://eliware.org)
+- [GitHub Org](https://github.com/eliware)
+- [GitHub Repo](https://github.com/eliware/snowflake)
+- [Bug Reports](https://github.com/eliware/snowflake/issues)
+- [npm](https://www.npmjs.com/package/@eliware/snowflake)
+- [Discord](https://discord.gg/M6aTR9eTwN)
 
 ## License
 
-MIT © Eli Sterling, eliware.org
+[MIT © Eliware](LICENSE)

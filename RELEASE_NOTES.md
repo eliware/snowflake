@@ -1,59 +1,57 @@
 # Release Notes
 
-## 2.0.0 — August 28, 2026
+## 12.0.0 — 2026-10-12
 
-- Adopted the shared `@eliware/test` harness for testing and linting with
-  strict 100×4 coverage enforcement.
-- Modernized package metadata, documentation, package contents, and CI for
-  Node.js `>=26`, including cross-platform validation and tag-only publishing.
-- Added production dependency auditing and repository-owned Knit validation.
-- Added fail-fast sequence-overflow handling and expanded BigInt, boundary, and
-  rollback coverage.
-- Removed obsolete Jest-result ignore configuration and added shared project
-  working rules.
-- Reorganized production modules under `src/` with a mirrored module-level
-  test tree under `tests/`.
-- Breaking: the standard `test` and `lint` scripts now delegate to
-  `@eliware/test`.
+### Changed
 
-## 1.1.5 — August 7, 2026
+- Updated the package to the v12 repository conventions.
+- Updated the shared test harness and publication workflows.
+- Preserved the Snowflake generator API and decimal string output.
 
-- Aligned repository layout, scripts, CI, documentation, and package contents with Eliware library conventions.
-- Added TypeScript declaration checking and standardized package validation.
-- Moved tests under `tests/` and included a runnable `examples/` file in the package.
-- Removed the legacy `main` metadata from this ESM-only package.
-- Verification: tests, coverage, gap checks, lint, typecheck, smoke test, and package dry-run pass.
+## 2.0.0 — 2026-08-28
 
-## 1.1.4 — August 7, 2026
+### Added
+
+- Added fail-fast sequence overflow handling and expanded boundary coverage.
+- Added TypeScript declarations for public exports and options.
+
+### Changed
+
+- Adopted `@eliware/test` for tests and lint checks.
+- Updated package metadata, documentation, and CI for Node.js 26 or newer.
+- Reorganized production modules under `src/` and tests under `tests/`.
+
+### Breaking changes
+
+- Changed the `test` and `lint` scripts to use `@eliware/test`.
+
+## 1.1.5 — 2026-08-07
+
+### Changed
+
+- Aligned the repository layout, scripts, documentation, and package contents.
+- Added TypeScript declaration checks and package validation.
+- Moved tests under `tests/` and added a runnable native ESM example.
+- Removed the legacy CommonJS package entry point.
+
+## 1.1.4 — 2026-08-07
 
 ### Changed
 
 - Removed the unused `@eliware/common` runtime dependency.
-- Reduced the installed dependency tree and regenerated the npm lockfile.
 - Added manual GitHub Actions workflow dispatch support.
 
-### Verification
-
-- npm audit: 0 vulnerabilities.
-
-## 1.1.2
+## 1.1.2 — 2026-08-06
 
 ### Added
 
-- Rebuilt the generator around a configurable, BigInt-safe Snowflake implementation.
-- Added the custom Eliware epoch: `365662380000n` (`1981-08-03T04:53:00Z`).
-- Added worker ID and process ID fields for distributed deployments.
+- Added a configurable BigInt-safe Snowflake ID generator.
+- Added the Eliware epoch, worker IDs, and process IDs.
 - Added clock rollback protection and sequence overflow handling.
-- Added injectable clocks, range validation, and timestamp-capacity validation.
-- Added TypeScript declarations for all public options and exports.
+- Added injectable clocks, range checks, and timestamp capacity checks.
+- Added TypeScript declarations for public options and exports.
 
 ### Changed
 
-- Removed CommonJS entrypoints and tests; the package is ESM-only.
-- Expanded documentation with deployment and bit-layout guidance.
-- Added complete generator behavior tests.
-
-### Verification
-
-- Jest coverage: 100% statements, branches, functions, and lines.
-- Oxlint: 0 warnings and errors.
+- Removed CommonJS entry points and tests. The package now uses native ESM.
+- Expanded deployment and bit layout guidance.

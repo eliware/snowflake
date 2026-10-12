@@ -1,5 +1,5 @@
-import { constants } from './constants.mjs';
-import { createGenerator } from './generator.mjs';
+import { constants } from "./constants.mjs";
+import { createGenerator } from "./generator.mjs";
 
 export const createSnowflakeGenerator = createGenerator;
 export const generate = createGenerator();

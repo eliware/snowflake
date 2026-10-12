@@ -1,76 +1,109 @@
 {
-    "name": "@eliware/snowflake",
-    "type": "module",
-    "version": "2.0.0",
-    "description": "A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-safe generators with configurable epoch and worker ID.",
-    "engines": {
-        "node": ">=26"
-    },
-    "types": "src/index.d.ts",
-    "files": [
-        "src",
-        "README.md",
-        "LICENSE",
-        "RELEASE_NOTES.md",
-        "examples"
+  "name": "@eliware/snowflake",
+  "version": "12.0.0",
+  "type": "module",
+  "description": "A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-safe generators with configurable epoch and worker ID.",
+  "keywords": [
+    "snowflake",
+    "snowflake-id",
+    "id-generator",
+    "discord",
+    "unique-id",
+    "bigint",
+    "nodejs",
+    "esm"
+  ],
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "main": "./src/index.mjs",
+  "files": [
+    "src/",
+    "docs/",
+    "README.md",
+    "AGENTS.md",
+    "LICENSE",
+    "RELEASE_NOTES.md",
+    "examples/",
+    "specs/"
+  ],
+  "scripts": {
+    "test": "eliware-test",
+    "lint": "eliware-test --lint",
+    "audit": "eliware-test --audit",
+    "format": "eliware-test --format",
+    "format:check": "eliware-test --format-check",
+    "typecheck": "tsc --project tsconfig.json",
+    "pack": "eliware-test --pack"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "devDependencies": {
+    "@eliware/test": "^12.0.0",
+    "typescript": "^7.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.mjs"
     ],
-    "publishConfig": {
-        "access": "public"
-    },
-    "exports": {
-        ".": {
-            "types": "./src/index.d.ts",
-            "import": "./src/index.mjs"
-        }
-    },
-    "scripts": {
-        "test": "eliware-test",
-        "lint": "eliware-test --lint",
-        "audit": "npm audit --omit=dev --audit-level=moderate",
-        "typecheck": "tsc --project tsconfig.json",
-        "pack": "npm pack --dry-run"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/eliware/snowflake.git"
-    },
-    "keywords": [
-        "snowflake",
-        "snowflake-id",
-        "id-generator",
-        "discord",
-        "unique-id",
-        "bigint",
-        "nodejs",
-        "esm"
+    "collectCoverageFrom": [
+      "src/**/*.mjs"
     ],
-    "author": "Eli Sterling, eliware.org <eli@eliware.org>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/eliware/snowflake/issues"
-    },
-    "homepage": "https://github.com/eliware/snowflake#readme",
-    "devDependencies": {
-        "@eliware/test": "^6.0.1",
-        "typescript": "^7.0.2"
-    },
-    "prettier": {
-      "printWidth": 100,
-      "tabWidth": 2,
-      "useTabs": false,
-      "semi": true,
-      "singleQuote": false,
-      "quoteProps": "as-needed",
-      "jsxSingleQuote": false,
-      "trailingComma": "all",
-      "bracketSpacing": true,
-      "bracketSameLine": false,
-      "arrowParens": "always",
-      "proseWrap": "preserve",
-      "endOfLine": "lf"
-    },
-    "eliware": {
-      "id": "E-106",
-      "apply": ["general", "library", "npm-published"]
+    "coverageReporters": [
+      "text",
+      "json-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
     }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": false,
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "proseWrap": "preserve",
+    "endOfLine": "lf"
+  },
+  "author": "Eliware <eliware@eliware.org>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliware/snowflake.git"
+  },
+  "homepage": "https://github.com/eliware/snowflake#readme",
+  "bugs": {
+    "url": "https://github.com/eliware/snowflake/issues"
+  },
+  "eliware": {
+    "id": "E-106",
+    "apply": [
+      "general",
+      "library",
+      "npm-published"
+    ]
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.mjs"
+    }
+  },
+  "types": "./src/index.d.ts"
 }

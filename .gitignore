@@ -137,3 +137,15 @@ dist
 
 # jest
 .agentx*
+
+# Shared repository validation
+.git/
+**/.git/
+.DS_Store
+Thumbs.db
+.env*
+!.env*.example
+generated
+artifacts
+test-results
+build

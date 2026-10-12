@@ -13,7 +13,7 @@ export interface SnowflakeConstants {
 }
 
 export function createSnowflakeGenerator(options?: SnowflakeGeneratorOptions): () => string;
-export const generate: () => string;
-export const snowflake: typeof generate;
-export const constants: SnowflakeConstants;
+export declare const generate: () => string;
+export declare const snowflake: typeof generate;
+export declare const constants: SnowflakeConstants;
 export default generate;
