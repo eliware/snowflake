@@ -69,7 +69,8 @@ Create a custom generator when you need a different identity, epoch, or clock.
 ## Use a custom clock
 
 Pass `now` to set the clock source.
-Return integer Unix time in milliseconds from that function.
+Return a safe integer number or a bigint from that function.
+The value must be Unix time in milliseconds.
 Use this option for deterministic tests or a controlled clock source.
 
 ## Handle time and sequence limits

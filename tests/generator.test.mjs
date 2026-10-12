@@ -20,6 +20,9 @@ test("protects rollback and rejects invalid timestamps", () => {
   expect(() => createGenerator({ epoch: 100n, now: () => 100n + (1n << 42n) })()).toThrow(
     RangeError,
   );
+  expect(() => createGenerator({ epoch: 1000, now: () => 1000.5 })()).toThrow(
+    "current time must be a safe integer or bigint",
+  );
   expect(() => createGenerator({ epoch: 0, now: () => 0 })()).not.toThrow();
 });
 
@@ -29,6 +32,8 @@ test("fails fast on sequence overflow", () => {
   for (let i = 0; i < 4096; i += 1) gen();
   expect(() => gen()).toThrow("sequence overflow; clock must advance before retrying");
   expect(() => gen()).toThrow("sequence overflow; clock must advance before retrying");
-  now += 1;
+  now = 1000.5;
+  expect(() => gen()).toThrow("current time must be a safe integer or bigint");
+  now = 1001;
   expect(BigInt(gen()) & 4095n).toBe(0n);
 });

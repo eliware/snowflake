@@ -14,7 +14,10 @@ export function createGenerator(options = {}) {
   let sequence = 0n;
 
   function readTime() {
-    const timestamp = BigInt(now());
+    const clockValue = now();
+    if (typeof clockValue === "number" && !Number.isSafeInteger(clockValue))
+      throw new RangeError("current time must be a safe integer or bigint");
+    const timestamp = BigInt(clockValue);
     if (timestamp < baseEpoch) throw new RangeError("current time must not be before epoch");
     return timestamp;
   }

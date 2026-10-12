@@ -6,6 +6,7 @@
 | --------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------- |
 | `RangeError` for `workerId` or `processId`    | The value is outside `0` through `31`.               | Set an integer from `0` through `31`.                           |
 | `TypeError` for `now`                         | The option is not a function.                        | Pass a function that returns Unix time in milliseconds.         |
+| `RangeError` for invalid clock number         | The clock returned a fractional or unsafe number.    | Return a safe integer number or a bigint.                       |
 | `RangeError` for time before epoch            | The clock value is lower than `epoch`.               | Set the correct epoch or fix the clock source.                  |
 | `RangeError` for timestamp capacity           | Elapsed time is greater than the 42-bit limit.       | Use a valid epoch for the required date range.                  |
 | `RangeError` for sequence overflow            | The generator created 4096 IDs at one timestamp.     | Wait until the clock moves past the last timestamp, then retry. |
@@ -28,7 +29,8 @@ Set both IDs through deployment configuration when several hosts create IDs.
 
 ## Invalid timestamps
 
-The clock must return integer Unix time in milliseconds.
+The clock must return a safe integer number or a bigint.
+The value must be Unix time in milliseconds.
 The timestamp must be at or after the configured epoch.
 The elapsed time must fit in 42 bits.
 Check the clock and epoch values when timestamp validation fails.
