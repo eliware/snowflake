@@ -6,7 +6,7 @@
 | --------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------- |
 | `RangeError` for `workerId` or `processId`    | The value is outside `0` through `31`.               | Set an integer from `0` through `31`.                           |
 | `TypeError` for `now`                         | The option is not a function.                        | Pass a function that returns Unix time in milliseconds.         |
-| `RangeError` for `epoch`                      | The epoch is negative or an unsafe number.           | Set a nonnegative epoch as a safe integer or bigint.            |
+| `RangeError` for `epoch`                      | The epoch is outside the supported range.            | Set the epoch from zero through the timestamp limit.            |
 | `RangeError` for invalid clock number         | The clock returned a fractional or unsafe number.    | Return a safe integer number or a bigint.                       |
 | `RangeError` for time before epoch            | The clock value is lower than `epoch`.               | Set the correct epoch or fix the clock source.                  |
 | `RangeError` for timestamp capacity           | Elapsed time is greater than the 42-bit limit.       | Use a valid epoch for the required date range.                  |

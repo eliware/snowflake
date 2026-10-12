@@ -37,3 +37,17 @@ test("fails fast on sequence overflow", () => {
   now = 1001;
   expect(BigInt(gen()) & 4095n).toBe(0n);
 });
+
+test("keeps generator state after a timestamp capacity error", () => {
+  let now = 1000n;
+  const gen = createGenerator({ epoch: 1000n, now: () => now });
+  const first = BigInt(gen());
+  const second = BigInt(gen());
+  now = 1001n + (1n << 42n);
+  expect(() => gen()).toThrow("timestamp exceeds Snowflake capacity");
+  now = 1000n;
+  const third = BigInt(gen());
+  expect(third).toBeGreaterThan(second);
+  expect(third & 4095n).toBe(2n);
+  expect(first).toBeLessThan(second);
+});

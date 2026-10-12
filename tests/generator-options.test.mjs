@@ -1,4 +1,4 @@
-import { DEFAULT_EPOCH } from "../src/constants.mjs";
+import { DEFAULT_EPOCH, MAX_TIMESTAMP } from "../src/constants.mjs";
 import { validateGeneratorOptions } from "../src/generator-options.mjs";
 
 test("applies defaults and normalizes generator options", () => {
@@ -26,6 +26,7 @@ test("rejects invalid identities and clocks", () => {
   expect(() => validateGeneratorOptions({ processId: 32 })).toThrow(RangeError);
   expect(() => validateGeneratorOptions({ epoch: -1 })).toThrow(RangeError);
   expect(() => validateGeneratorOptions({ epoch: -1n })).toThrow(RangeError);
+  expect(() => validateGeneratorOptions({ epoch: MAX_TIMESTAMP + 1n })).toThrow(RangeError);
   expect(() => validateGeneratorOptions({ epoch: 1.5 })).toThrow(RangeError);
   expect(() => validateGeneratorOptions({ epoch: Number.MAX_SAFE_INTEGER + 1 })).toThrow(
     RangeError,

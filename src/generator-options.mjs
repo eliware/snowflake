@@ -1,4 +1,4 @@
-import { DEFAULT_EPOCH } from "./constants.mjs";
+import { DEFAULT_EPOCH, MAX_TIMESTAMP } from "./constants.mjs";
 import { validateIdentity } from "./validation.mjs";
 
 const defaultNow = () => Date.now();
@@ -10,9 +10,10 @@ export function validateGeneratorOptions({
   now = defaultNow,
 } = {}) {
   if (typeof epoch === "number" && !Number.isSafeInteger(epoch))
-    throw new RangeError("epoch must be a nonnegative safe integer or bigint");
+    throw new RangeError("epoch must be between 0 and the timestamp limit");
   const baseEpoch = BigInt(epoch);
-  if (baseEpoch < 0n) throw new RangeError("epoch must be a nonnegative safe integer or bigint");
+  if (baseEpoch < 0n || baseEpoch > MAX_TIMESTAMP)
+    throw new RangeError("epoch must be between 0 and the timestamp limit");
   const identity = validateIdentity(workerId, processId);
   if (typeof now !== "function") throw new TypeError("now must be a function");
 

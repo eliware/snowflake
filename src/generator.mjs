@@ -25,21 +25,23 @@ export function createGenerator(options = {}) {
   return function generate() {
     let timestamp = readTime();
     if (timestamp < lastTimestamp) timestamp = lastTimestamp;
+    let nextSequence;
     if (timestamp === lastTimestamp) {
       if (sequence === SEQUENCE_MASK)
         throw new RangeError("sequence overflow; clock must advance before retrying");
-      sequence += 1n;
+      nextSequence = sequence + 1n;
     } else {
-      sequence = 0n;
+      nextSequence = 0n;
     }
     const elapsed = timestamp - baseEpoch;
     if (elapsed > MAX_TIMESTAMP) throw new RangeError("timestamp exceeds Snowflake capacity");
     lastTimestamp = timestamp;
+    sequence = nextSequence;
     return (
       (elapsed << (WORKER_BITS + PROCESS_BITS + SEQUENCE_BITS)) |
       (worker << (PROCESS_BITS + SEQUENCE_BITS)) |
       (processNumber << SEQUENCE_BITS) |
-      sequence
+      nextSequence
     ).toString();
   };
 }
