@@ -1,24 +1,14 @@
 import {
-  DEFAULT_EPOCH,
   MAX_TIMESTAMP,
   PROCESS_BITS,
   SEQUENCE_BITS,
   SEQUENCE_MASK,
   WORKER_BITS,
 } from "./constants.mjs";
-import { validateIdentity } from "./validation.mjs";
+import { validateGeneratorOptions } from "./generator-options.mjs";
 
-const defaultNow = () => Date.now();
-
-export function createGenerator({
-  epoch = DEFAULT_EPOCH,
-  workerId = 0,
-  processId = process.pid % 32,
-  now = defaultNow,
-} = {}) {
-  const baseEpoch = BigInt(epoch);
-  const { worker, processNumber } = validateIdentity(workerId, processId);
-  if (typeof now !== "function") throw new TypeError("now must be a function");
+export function createGenerator(options = {}) {
+  const { baseEpoch, worker, processNumber, now } = validateGeneratorOptions(options);
 
   let lastTimestamp = -1n;
   let sequence = 0n;

@@ -1,4 +1,3 @@
-import { DEFAULT_EPOCH, constants } from "../src/constants.mjs";
 import { createGenerator } from "../src/generator.mjs";
 
 test("generates encoded IDs and sequence values", () => {
@@ -11,19 +10,17 @@ test("generates encoded IDs and sequence values", () => {
   expect(second & 4095n).toBe(1n);
 });
 
-test("protects rollback and validates clock and capacity", () => {
+test("protects rollback and rejects invalid timestamps", () => {
   let now = 2000;
   const gen = createGenerator({ epoch: 1000, now: () => now });
   const first = BigInt(gen());
   now = 1999;
   expect(BigInt(gen())).toBeGreaterThan(first);
-  expect(() => createGenerator({ now: 1 })).toThrow(TypeError);
   expect(() => createGenerator({ epoch: 100, now: () => 99 })()).toThrow(RangeError);
-  expect(() =>
-    createGenerator({ epoch: DEFAULT_EPOCH, now: () => DEFAULT_EPOCH + (1n << 42n) })(),
-  ).toThrow(RangeError);
+  expect(() => createGenerator({ epoch: 100n, now: () => 100n + (1n << 42n) })()).toThrow(
+    RangeError,
+  );
   expect(() => createGenerator({ epoch: 0, now: () => 0 })()).not.toThrow();
-  expect(constants.epoch).toBe(DEFAULT_EPOCH);
 });
 
 test("fails fast on sequence overflow", () => {
