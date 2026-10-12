@@ -1,5 +1,5 @@
 // ESM example: example.mjs
-import generate, { createSnowflakeGenerator } from "./index.mjs";
+import generate, { createSnowflakeGenerator } from "@eliware/snowflake";
 
 console.log("Default generate():", generate());
 
