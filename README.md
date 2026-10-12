@@ -2,7 +2,7 @@
 
 ## @eliware/snowflake [![npm](https://img.shields.io/npm/v/@eliware/snowflake)](https://www.npmjs.com/package/@eliware/snowflake) [![License](https://img.shields.io/github/license/eliware/snowflake)](https://github.com/eliware/snowflake/blob/main/LICENSE) [![CI](https://github.com/eliware/snowflake/actions/workflows/ci.yaml/badge.svg)](https://github.com/eliware/snowflake/actions/workflows/ci.yaml)
 
-A Node.js Snowflake ID generator with BigInt support and a configurable epoch. Set epoch to 1420070400000n to decode timestamps with Discord's epoch.
+A Node.js Snowflake ID generator with BigInt support and a configurable epoch.
 
 ## Table of Contents
 
