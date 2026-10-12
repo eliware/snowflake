@@ -9,7 +9,10 @@ export function validateGeneratorOptions({
   processId = process.pid % 32,
   now = defaultNow,
 } = {}) {
+  if (typeof epoch === "number" && !Number.isSafeInteger(epoch))
+    throw new RangeError("epoch must be a nonnegative safe integer or bigint");
   const baseEpoch = BigInt(epoch);
+  if (baseEpoch < 0n) throw new RangeError("epoch must be a nonnegative safe integer or bigint");
   const identity = validateIdentity(workerId, processId);
   if (typeof now !== "function") throw new TypeError("now must be a function");
 

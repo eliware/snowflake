@@ -39,6 +39,7 @@ Pass an options object to `createSnowflakeGenerator`.
 | `now`       | function         | `Date.now`         | Function that returns Unix time in milliseconds. |
 
 Use the same epoch for all generators that create IDs for one application.
+Set a nonnegative epoch as a safe integer number or a bigint.
 Assign a unique worker and process ID pair to each active generator.
 Set `processId` when several hosts or processes share worker IDs.
 The default process ID can repeat across hosts.

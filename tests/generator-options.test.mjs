@@ -24,5 +24,11 @@ test("converts configured epoch and identity values", () => {
 test("rejects invalid identities and clocks", () => {
   expect(() => validateGeneratorOptions({ workerId: 32 })).toThrow(RangeError);
   expect(() => validateGeneratorOptions({ processId: 32 })).toThrow(RangeError);
+  expect(() => validateGeneratorOptions({ epoch: -1 })).toThrow(RangeError);
+  expect(() => validateGeneratorOptions({ epoch: -1n })).toThrow(RangeError);
+  expect(() => validateGeneratorOptions({ epoch: 1.5 })).toThrow(RangeError);
+  expect(() => validateGeneratorOptions({ epoch: Number.MAX_SAFE_INTEGER + 1 })).toThrow(
+    RangeError,
+  );
   expect(() => validateGeneratorOptions({ now: 1 })).toThrow(TypeError);
 });
