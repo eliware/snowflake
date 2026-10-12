@@ -23,9 +23,9 @@ A minimal Node.js Snowflake ID generator (Discord-compatible). Provides BigInt-s
 
 ## Features
 
-Create unique, time-ordered IDs with a configurable epoch and machine identity.
-The generator returns decimal strings that preserve all ID bits in JavaScript and JSON.
-It protects against clock rollback and reports sequence overflow.
+Create time-ordered IDs with a custom epoch and unique worker and process IDs.
+Receive decimal strings that preserve every ID bit in JavaScript and JSON.
+The generator handles clock rollback and reports sequence overflow.
 
 ## Requirements
 
@@ -34,7 +34,7 @@ Assign a unique worker and process ID pair to each active generator.
 
 ## Setup
 
-Install the package from npm:
+Install the package:
 
 ```text
 npm install @eliware/snowflake
@@ -42,7 +42,7 @@ npm install @eliware/snowflake
 
 ## Usage
 
-Create a generator with a stable identity:
+Create a generator with a unique identity:
 
 ```js
 import { createSnowflakeGenerator } from "@eliware/snowflake";
@@ -51,50 +51,43 @@ const generate = createSnowflakeGenerator({ workerId: 3, processId: 7 });
 console.log(generate());
 ```
 
-The default epoch is `365662380000n`. Configure `processId` when identity must remain unique across hosts.
 See [release notes](RELEASE_NOTES.md) for changes by version.
+See the [usage guide](docs/usage.md) for options, ID fields, and limits.
 
 ## Development
 
-Install locked dependencies with `npm ci`.
-Use native ESM and keep implementation modules under `src/`.
-Read [documentation](docs/README.md) and [specifications](specs/README.md) before changes.
+Read [user documentation](docs/README.md), [examples](examples/README.md), and [specifications](specs/README.md).
 
 ## Testing
 
 Run `npm test` for all required checks.
 Run `npm run lint`, `npm run format:check`, `npm run audit`, `npm run typecheck`, or `npm run pack` for focused checks.
-Run `npm run format` to format maintained files.
 
 ## Troubleshooting
 
-The generator throws `RangeError` for invalid IDs, timestamps, or sequence overflow.
-Retry sequence overflow after the clock advances.
-See [troubleshooting](docs/troubleshooting.md) for more details.
+See [troubleshooting](docs/troubleshooting.md) for error causes and recovery steps.
 
 ## Security
 
 Treat IDs as identifiers, not secrets.
-IDs expose time and deployment information.
+IDs reveal timestamp and deployment data.
 Do not use IDs as authentication tokens.
 
 ## API
 
 `createSnowflakeGenerator(options)` returns a function that creates decimal-string IDs.
-Options are `epoch`, `workerId`, `processId`, and `now`.
-The default generator is exported as `generate`, `snowflake`, and the default export.
+Options set the epoch, worker ID, process ID, and clock.
+The default generator is `generate`, `snowflake`, and the default export.
 The `constants` export provides the default epoch and bit sizes.
 
 ## Packaging
 
 The package provides native ESM code and TypeScript declarations.
 It has no runtime dependencies.
-The package supports Node.js 26 and later.
 
 ## Examples
 
 Run the [native ESM example](examples/example.mjs) with Node.js 26 or later.
-See [examples](examples/README.md) for the example index.
 
 ## Support
 

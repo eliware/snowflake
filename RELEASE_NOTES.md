@@ -4,9 +4,17 @@
 
 ### Changed
 
-- Updated the package to the v12 repository conventions.
-- Updated the shared test harness and publication workflows.
-- Preserved the Snowflake generator API and decimal string output.
+- Moved library code to `src/` and added matching tests under `tests/`.
+- Added user guides, navigation indexes, repository rules, and a runnable example index.
+- Expanded user guides with option defaults, ID fields, identity rules, limits, and error actions.
+- Updated package metadata, version, contents, license, and dependency lock.
+- Added repository ID metadata and v12 specification files.
+- Updated ignore rules and removed obsolete Jest result settings.
+- Updated validation scripts and the shared test harness to version 12.
+- Replaced the CI workflow and added an npm publication workflow with provenance.
+- Updated Knit commands and its repository path.
+- Updated README and contributor rules to match the v12 conventions.
+- Kept the public API and decimal string output unchanged.
 
 ## 2.0.0 — 2026-08-28
 
