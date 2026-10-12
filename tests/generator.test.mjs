@@ -24,7 +24,11 @@ test("protects rollback and rejects invalid timestamps", () => {
 });
 
 test("fails fast on sequence overflow", () => {
-  const gen = createGenerator({ epoch: 1000, now: () => 1000 });
+  let now = 1000;
+  const gen = createGenerator({ epoch: 1000, now: () => now });
   for (let i = 0; i < 4096; i += 1) gen();
   expect(() => gen()).toThrow("sequence overflow; clock must advance before retrying");
+  expect(() => gen()).toThrow("sequence overflow; clock must advance before retrying");
+  now += 1;
+  expect(BigInt(gen()) & 4095n).toBe(0n);
 });

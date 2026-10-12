@@ -23,9 +23,9 @@ export function createGenerator(options = {}) {
     let timestamp = readTime();
     if (timestamp < lastTimestamp) timestamp = lastTimestamp;
     if (timestamp === lastTimestamp) {
-      sequence = (sequence + 1n) & SEQUENCE_MASK;
-      if (sequence === 0n)
+      if (sequence === SEQUENCE_MASK)
         throw new RangeError("sequence overflow; clock must advance before retrying");
+      sequence += 1n;
     } else {
       sequence = 0n;
     }
