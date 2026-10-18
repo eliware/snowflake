@@ -1,25 +1,23 @@
-version: "12.0"
+version: "13.0"
 description: Defines behavior and limits for the Snowflake ID generator.
-requires: []
-conflicts: []
 directives:
   - id: E-106.0
     dos:
-      - Generate time-ordered Snowflake IDs.
+      - Create time-ordered Snowflake IDs.
       - Return each ID as a decimal string.
       - Use configurable epoch and identity values.
     donts:
-      - Do not present generated IDs as secrets.
+      - Do not show generated IDs as secrets.
     children:
       - id: E-106.0.0
         dos:
           - Validate worker and process IDs before generation.
           - Reject timestamps before the configured epoch.
         donts:
-          - Do not permit identity values outside the supported bit range.
+          - Do not use identity values outside the supported bit range.
       - id: E-106.0.1
         dos:
-          - Protect generation from clock rollback.
+          - Keep IDs unique when the clock returns a lower value.
           - Report sequence overflow before an ID can repeat.
         donts:
           - Do not return an ID when the sequence overflows.

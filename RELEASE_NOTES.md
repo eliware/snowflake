@@ -1,5 +1,18 @@
 # Release Notes
 
+## 13.0.0 — 2026-10-17
+
+### Added
+
+- Added the canonical npm publication workflow.
+- Added full Git history to CI.
+
+### Changed
+
+- Aligned CI and Knit files with the shared templates.
+- Updated repository rules and text for Convention 13.
+- Set the package version to 13.0.0.
+
 ## 12.0.0 — 2026-10-12
 
 ### Changed
@@ -32,34 +45,3 @@
 ### Breaking changes
 
 - Changed the `test` and `lint` scripts to use `@eliware/test`.
-
-## 1.1.5 — 2026-08-07
-
-### Changed
-
-- Aligned the repository layout, scripts, documentation, and package contents.
-- Added TypeScript declaration checks and package validation.
-- Moved tests under `tests/` and added a runnable native ESM example.
-- Removed the legacy CommonJS package entry point.
-
-## 1.1.4 — 2026-08-07
-
-### Changed
-
-- Removed the unused `@eliware/common` runtime dependency.
-- Added manual GitHub Actions workflow dispatch support.
-
-## 1.1.2 — 2026-08-06
-
-### Added
-
-- Added a configurable BigInt-safe Snowflake ID generator.
-- Added the Eliware epoch, worker IDs, and process IDs.
-- Added clock rollback protection and sequence overflow handling.
-- Added injectable clocks, range checks, and timestamp capacity checks.
-- Added TypeScript declarations for public options and exports.
-
-### Changed
-
-- Removed CommonJS entry points and tests. The package now uses native ESM.
-- Expanded deployment and bit layout guidance.

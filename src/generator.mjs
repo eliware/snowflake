@@ -28,7 +28,9 @@ export function createGenerator(options = {}) {
     let nextSequence;
     if (timestamp === lastTimestamp) {
       if (sequence === SEQUENCE_MASK)
-        throw new RangeError("sequence overflow; clock must advance before retrying");
+        throw new RangeError(
+          "sequence overflow. Retry when the clock returns a greater timestamp.",
+        );
       nextSequence = sequence + 1n;
     } else {
       nextSequence = 0n;

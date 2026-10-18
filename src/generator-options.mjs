@@ -15,7 +15,7 @@ export function validateGeneratorOptions({
   if (baseEpoch < 0n || baseEpoch > MAX_TIMESTAMP)
     throw new RangeError("epoch must be between 0 and the timestamp limit");
   const identity = validateIdentity(workerId, processId);
-  if (typeof now !== "function") throw new TypeError("now must be a function");
+  if (typeof now !== "function") throw new TypeError("clock source must be a function");
 
   return { baseEpoch, ...identity, now };
 }

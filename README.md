@@ -31,7 +31,7 @@ The generator handles clock rollback and reports sequence overflow.
 ## Requirements
 
 Use Node.js 26 or later.
-Assign a unique worker and process ID pair to each active generator.
+Give each active generator a unique worker and process ID pair.
 
 ## Setup
 
@@ -62,7 +62,11 @@ Read [user documentation](docs/README.md), [examples](examples/README.md), and [
 ## Testing
 
 Run `npm test` for all required checks.
-Run `npm run lint`, `npm run format:check`, `npm run audit`, `npm run typecheck`, or `npm run pack` for focused checks.
+Run `npm run lint` for lint checks.
+Run `npm run format:check` for format checks.
+Run `npm run audit` for dependency checks.
+Run `npm run typecheck` for TypeScript checks.
+Run `npm run pack` for package checks.
 
 ## Troubleshooting
 
@@ -70,8 +74,8 @@ See [troubleshooting](docs/troubleshooting.md) for error causes and recovery ste
 
 ## Security
 
-Treat IDs as identifiers, not secrets.
-IDs reveal timestamp and deployment data.
+Use IDs as identifiers, not secrets.
+IDs show timestamp and deployment data.
 Do not use IDs as authentication tokens.
 
 ## API

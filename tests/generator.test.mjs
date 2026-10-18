@@ -30,8 +30,12 @@ test("fails fast on sequence overflow", () => {
   let now = 1000;
   const gen = createGenerator({ epoch: 1000, now: () => now });
   for (let i = 0; i < 4096; i += 1) gen();
-  expect(() => gen()).toThrow("sequence overflow; clock must advance before retrying");
-  expect(() => gen()).toThrow("sequence overflow; clock must advance before retrying");
+  expect(() => gen()).toThrow(
+    "sequence overflow. Retry when the clock returns a greater timestamp.",
+  );
+  expect(() => gen()).toThrow(
+    "sequence overflow. Retry when the clock returns a greater timestamp.",
+  );
   now = 1000.5;
   expect(() => gen()).toThrow("current time must be a safe integer or bigint");
   now = 1001;
