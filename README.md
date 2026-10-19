@@ -23,76 +23,33 @@ A Node.js Snowflake ID generator with BigInt support and a configurable epoch.
 
 ## Features
 
-Create time-ordered IDs with a custom epoch and unique worker and process IDs.
-The IDs use the Discord Snowflake bit layout.
-Receive decimal strings that preserve every ID bit in JavaScript and JSON.
-The generator handles clock rollback and reports sequence overflow.
-
 ## Requirements
-
-Use Node.js 26 or later.
-Give each active generator a unique worker and process ID pair.
 
 ## Setup
 
-Install the package:
-
-```text
-npm install @eliware/snowflake
-```
-
 ## Usage
 
-Create a generator with a unique identity:
+[Release notes](RELEASE_NOTES.md)
 
-```js
-import { createSnowflakeGenerator } from "@eliware/snowflake";
-
-const generate = createSnowflakeGenerator({ workerId: 3, processId: 7 });
-console.log(generate());
-```
-
-See [release notes](RELEASE_NOTES.md) for changes by version.
-See the [usage guide](docs/usage.md) for options, ID fields, and limits.
+[Specifications](specs/README.md)
 
 ## Development
 
-Read [user documentation](docs/README.md), [examples](examples/README.md), and [specifications](specs/README.md).
+[Documentation](docs/README.md)
 
 ## Testing
 
-Run `npm test` for all required checks.
-Run `npm run lint` for lint checks.
-Run `npm run format:check` for format checks.
-Run `npm run audit` for dependency checks.
-Run `npm run typecheck` for TypeScript checks.
-Run `npm run pack` for package checks.
-
 ## Troubleshooting
-
-See [troubleshooting](docs/troubleshooting.md) for error causes and recovery steps.
 
 ## Security
 
-Use IDs as identifiers, not secrets.
-IDs show timestamp and deployment data.
-Do not use IDs as authentication tokens.
-
 ## API
-
-`createSnowflakeGenerator(options)` returns a function that creates decimal-string IDs.
-Options set the epoch, worker ID, process ID, and clock.
-The default generator is `generate`, `snowflake`, and the default export.
-The `constants` export provides the default epoch and bit sizes.
 
 ## Packaging
 
-The package provides native ESM code and TypeScript declarations.
-It has no runtime dependencies.
-
 ## Examples
 
-Run the [native ESM example](examples/example.mjs) with Node.js 26 or later.
+[Examples](examples/README.md)
 
 ## Support
 
