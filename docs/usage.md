@@ -38,21 +38,36 @@ Pass an options object to `createSnowflakeGenerator`.
 | `processId` | number or bigint | `process.pid % 32` | Process value from `0` through `31`.             |
 | `now`       | function         | `Date.now`         | Function that returns Unix time in milliseconds. |
 
+`createSnowflakeGenerator(options)` returns a function that creates IDs.
+Each call returns one decimal string.
+Set `epoch` as a safe integer number or a bigint from zero through `(1n << 42n) - 1n`.
+Set `workerId` and `processId` to integer values from `0` through `31`.
 Use the same epoch for all generators in one application.
-Set the epoch to a value from zero through the timestamp limit.
-Pass it as a safe integer number or a bigint.
-Set `epoch` to `1420070400000n` to decode timestamps with Discord's epoch.
 
-Give each active generator a unique worker and process ID pair.
-Set `processId` when some hosts or processes share worker IDs.
+Give each active generator a unique pair of `workerId` and `processId` values.
+Keep each pair unique while IDs from that pair remain in use.
+Set `processId` when some hosts or processes use the same `workerId`.
 The default process ID can repeat across hosts.
+
+To align timestamp decoding with Discord, set `epoch` to `1420070400000n`.
+This epoch matches Discord's timestamp epoch.
+It does not create an official Discord resource ID.
+
+```js
+const createDiscordTimeGenerator = createSnowflakeGenerator({
+  epoch: 1420070400000n,
+  workerId: 3,
+  processId: 7,
+});
+```
 
 ## Understand the ID fields
 
 Each ID has a 42-bit timestamp, a 5-bit worker ID, a 5-bit process ID, and a 12-bit sequence.
 The timestamp stores milliseconds since the configured epoch.
-The sequence starts at zero when the timestamp advances.
+The sequence starts at zero when the timestamp changes.
 The default epoch is `365662380000n`, or `1981-08-03T04:53:00Z`.
+The timestamp field sorts before the worker, process, and sequence fields.
 
 The generator combines the fields as follows:
 
@@ -70,6 +85,26 @@ These exports refer to the same generator instance.
 The default generator uses worker ID `0` and process ID `process.pid % 32`.
 Create a custom generator to set a different identity, epoch, or clock.
 
+The `constants` export has `epoch`, `sequenceBits`, `processBits`, and `workerBits` fields.
+Each field has a `bigint` value.
+The sequence, process, and worker fields use 12, 5, and 5 bits.
+The `constants` object is frozen.
+
+## Decode an ID timestamp
+
+Convert the ID string to a `bigint` before you read its timestamp field.
+Move the value right by 22 bits to read elapsed milliseconds.
+Add the configured epoch to get Unix time in milliseconds.
+Convert that value to a JavaScript `Date` to get its ISO 8601 value.
+
+```js
+const epoch = 365662380000n;
+const timestamp = new Date(Number((BigInt(id) >> 22n) + epoch));
+console.log(timestamp.toISOString());
+```
+
+Use the same epoch that the generator used to create the ID.
+
 ## Use a custom clock
 
 Pass `now` to set the clock source.
@@ -80,22 +115,26 @@ Use this option for deterministic tests or a controlled clock source.
 ## Time and sequence limits
 
 The generator uses the last timestamp when the clock returns a lower value.
-It increments the sequence while that timestamp remains active.
+The generator sets the sequence to zero when the timestamp changes.
+The generator increments the sequence while the timestamp stays the same.
+
 Each generator can create 4096 IDs in one millisecond.
 The generator throws `RangeError` after that limit.
-Retry when the clock returns a later millisecond.
+Retry when the clock returns a timestamp greater than the last timestamp.
 The generator throws `RangeError` for a timestamp before the epoch or greater than its 42-bit limit.
 
 ## Store and share IDs
 
 Keep each ID as a decimal string in JavaScript and JSON.
 Do not convert an ID to `number`.
+JSON cannot encode a `bigint` value without custom code.
 Use a text field or an unsigned 64-bit field in a database.
 Use `BigInt(id)` for exact integer math in JavaScript.
 
 ## Run the example
 
-Use Node.js 26 or later. Run this command from the repository root:
+Use Node.js 26 or later.
+Run this command from the repository root:
 
 ```text
 node examples/example.mjs
