@@ -1,6 +1,6 @@
 # Release Notes
 
-## 13.0.0 — 2026-10-17
+## 13.0.0 — 2026-10-19
 
 ### Added
 
@@ -9,9 +9,14 @@
 
 ### Changed
 
-- Aligned CI and Knit files with the shared templates.
-- Updated repository rules and text for Convention 13.
-- Set the package version to 13.0.0.
+- Updated the package to version 13.0.0 and upgraded `@eliware/test` and npm dependencies.
+- Aligned CI and npm publication workflows with the current templates and checkout action.
+- Updated Knit deployment commands and the repository path.
+- Updated specifications and repository guidance for Convention 13.
+- Expanded user guides with API details, ID limits, timestamp decoding, and storage guidance.
+- Documented the custom epoch for Discord timestamp decoding. It does not create official Discord IDs.
+- Changed the invalid clock source and sequence overflow error messages.
+- Reduced the root README and contributor guidance to convention-required content.
 
 ## 12.0.0 — 2026-10-12
 
