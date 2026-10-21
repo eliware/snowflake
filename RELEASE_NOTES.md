@@ -1,5 +1,13 @@
 # Release Notes
 
+## 14.0.0 — 2026-10-20
+
+### Changed
+
+- Upgraded `@eliware/test` to 14.0.0 and updated npm dependencies.
+- Set the package version to 14.0.0 and updated specification versions.
+- Added required content to `AGENTS.md` for Convention 14.
+
 ## 13.0.0 — 2026-10-19
 
 ### Added

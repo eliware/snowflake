@@ -7,9 +7,20 @@ Use native ESM.
 
 ## Scope and boundaries
 
+Keep this package focused on Snowflake ID generation.
+
 ## Layout
 
+Keep source files in `src/`.
+Keep tests in `tests/`.
+Keep guides in `docs/`.
+Keep examples in `examples/`.
+Keep specifications in `specs/`.
+
 ## Development
+
+Keep each module focused on one purpose.
+Keep each TypeScript declaration beside its ESM module.
 
 ## Validation
 
@@ -21,7 +32,13 @@ Run `npm run format:check`.
 
 ## Security
 
+Keep credentials and private data private.
+Use IDs as identifiers, not secrets.
+
 ## Changes
+
+Keep documentation current and direct.
+Get release approval before publication.
 
 ## Library
 
@@ -32,3 +49,7 @@ Prevent repeated full-suite runs during development.
 Run the full `npm test` suite for final validation before a commit, milestone, or release.
 
 ## npm publication
+
+Publish `@eliware/snowflake` only after release approval.
+Use `package.json.version` as the package version.
+Run package validation before you inspect the package.
