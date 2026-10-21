@@ -83,7 +83,10 @@ The generator combines the fields as follows:
 ((time - epoch) << 22) | (workerId << 17) | (processId << 12) | sequence
 ```
 
-The maximum elapsed timestamp is `(1n << 42n) - 1n` milliseconds.
+The epoch option accepts values through `(1n << 42n) - 1n` milliseconds.
+The timestamp field separately stores a maximum of `(1n << 42n) - 1n` elapsed milliseconds.
+The epoch limit applies to the configured epoch, not the final Unix time.
+The maximum supported Unix time equals the epoch plus the maximum elapsed timestamp.
 IDs can be greater than JavaScript's safe integer limit.
 
 ## Use the default generator

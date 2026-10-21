@@ -1,5 +1,6 @@
 import { createGenerator } from "../src/generator.mjs";
 import { jest } from "@jest/globals";
+import { MAX_TIMESTAMP } from "../src/constants.mjs";
 
 test("generates encoded IDs and sequence values", () => {
   const gen = createGenerator({ epoch: 1000n, workerId: 3, processId: 7, now: () => 1000 });
@@ -13,6 +14,13 @@ test("generates encoded IDs and sequence values", () => {
 
 test("uses default options when no options are supplied", () => {
   expect(createGenerator()()).toMatch(/^\d+$/);
+});
+
+test("supports the full elapsed timestamp range with the maximum epoch", () => {
+  const epoch = MAX_TIMESTAMP;
+  const gen = createGenerator({ epoch, now: () => epoch + MAX_TIMESTAMP });
+
+  expect(BigInt(gen()) >> 22n).toBe(MAX_TIMESTAMP);
 });
 
 test("protects rollback and rejects invalid timestamps", () => {
