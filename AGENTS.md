@@ -2,25 +2,19 @@
 
 ## Project
 
-Build a Snowflake ID library with Node.js 26.
-Use native ESM.
+Maintain `@eliware/snowflake`, a Snowflake ID library owned by Eliware.
 
 ## Scope and boundaries
 
-Keep this package focused on Snowflake ID generation.
+Limit this package to Snowflake ID generation.
 
 ## Layout
 
-Keep source files in `src/`.
-Keep tests in `tests/`.
-Keep guides in `docs/`.
-Keep examples in `examples/`.
-Keep specifications in `specs/`.
+Use `README.md` and `specs/README.md` to find repository paths.
 
 ## Development
 
-Keep each module focused on one purpose.
-Keep each TypeScript declaration beside its ESM module.
+Use Node.js 26 and native ESM for maintained JavaScript.
 
 ## Validation
 
@@ -32,13 +26,11 @@ Run `npm run format:check`.
 
 ## Security
 
-Keep credentials and private data private.
-Use IDs as identifiers, not secrets.
+Keep credentials, private data, and runtime state out of Git.
 
 ## Changes
 
-Keep documentation current and direct.
-Get release approval before publication.
+Update the nearest index when you add a document.
 
 ## Library
 
@@ -50,6 +42,5 @@ Run the full `npm test` suite for final validation before a commit, milestone, o
 
 ## npm publication
 
-Publish `@eliware/snowflake` only after release approval.
-Use `package.json.version` as the package version.
-Run package validation before you inspect the package.
+Run `npm run pack` to check package contents.
+Follow the approved release procedure.

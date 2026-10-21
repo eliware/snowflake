@@ -23,14 +23,13 @@ A Node.js Snowflake ID generator with BigInt support and a configurable epoch.
 
 ## Features
 
-Create time-ordered Snowflake IDs with a custom epoch and worker and process IDs.
-Return decimal strings so JavaScript and JSON preserve each ID exactly.
-The generator keeps IDs ordered when time decreases and reports sequence overflow.
+Create time-ordered Snowflake IDs as decimal strings.
+Set a custom epoch, worker ID, process ID, clock, or logger.
 
 ## Requirements
 
 Use Node.js 26 or later.
-Use one package instance in each Node.js process.
+Use native ECMAScript modules (ESM).
 
 ## Setup
 
@@ -42,7 +41,7 @@ npm install @eliware/snowflake
 
 ## Usage
 
-Import the generator factory and set a unique worker and process ID pair:
+Create a generator with a unique worker and process ID pair:
 
 ```js
 import { createSnowflakeGenerator } from "@eliware/snowflake";
@@ -52,48 +51,53 @@ console.log(generate());
 ```
 
 Each call returns one decimal string.
-
-[Release notes](RELEASE_NOTES.md)
-
-[Specifications](specs/README.md)
+Read the [usage guide](docs/usage.md) for generator options and ID fields.
+Read the [release notes](RELEASE_NOTES.md) for changes by version.
+Read the [specifications index](specs/README.md) for repository requirements.
 
 ## Development
 
-[Documentation](docs/README.md)
-See the [usage guide](docs/usage.md) for generator options and ID fields.
+Read the [documentation index](docs/README.md) for maintained guides.
 
 ## Testing
 
-Run `npm test` from a repository clone to run aggregate validation.
+Run `npm test` from a repository clone for aggregate validation.
 
 ## Troubleshooting
 
-Check the options and clock when the generator throws `RangeError`.
-For sequence overflow, retry when the clock returns a timestamp greater than the last timestamp.
 Read the [troubleshooting guide](docs/troubleshooting.md) for error causes and actions.
 
 ## Security
 
-Use IDs as identifiers. Each ID contains its generation time and worker and process values.
+Each ID contains its generation time and identity fields.
 Do not use IDs as secrets or authentication tokens.
-Read the [usage guide](docs/usage.md) for ID fields and storage guidance.
 
 ## API
 
 Import `createSnowflakeGenerator` to create a generator with custom options.
-Use `generate`, `snowflake`, or the default export for the default generator.
-Read the [usage guide](docs/usage.md) for the API and option details.
+Import `generate`, `snowflake`, or the default export to use the default generator.
+Import `constants` to read the default epoch and field sizes.
+Read the [usage guide](docs/usage.md) for API details and TypeScript declarations.
 
 ## Packaging
 
-The package uses native ESM and includes TypeScript declarations.
-The package uses `@eliware/log` for optional structured logging.
-Install it from [npm](https://www.npmjs.com/package/@eliware/snowflake).
+The package uses native ESM, includes TypeScript declarations, and depends on `@eliware/log`.
+Its root entrypoint is `src/index.mjs` and its declaration file is `src/index.d.ts`.
+The npm package includes these paths from `package.json`:
+
+- `src/`
+- `docs/`
+- `README.md`, `AGENTS.md`, `LICENSE`, and `RELEASE_NOTES.md`
+- `examples/` and `specs/`
+
+Use numeric `MAJOR.MINOR.PATCH` versions.
+Push a matching `v<version>` tag to start validation and npm publication.
+Follow the approved release procedure before you create a release tag.
 
 ## Examples
 
-[Run the native ESM example](examples/example.mjs).
-[Examples](examples/README.md)
+Run `node examples/example.mjs` to create sample IDs.
+Read [examples/README.md](examples/README.md) for the example index.
 
 ## Support
 
