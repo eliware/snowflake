@@ -1,12 +1,23 @@
 # Release Notes
 
-## 14.0.0 — 2026-10-20
+## 14.0.0 — 2026-10-21
+
+### Added
+
+- Added optional structured logging through `@eliware/log` with a custom logger option.
+- Added tests for logger records and the full elapsed timestamp range with the maximum epoch.
 
 ### Changed
 
-- Upgraded `@eliware/test` to 14.0.0 and updated npm dependencies.
-- Set the package version to 14.0.0 and updated specification versions.
-- Added required content to `AGENTS.md` for Convention 14.
+- Updated the package to version 14.0.0 and aligned its specifications with Eliware Test 14.
+- Updated npm dependencies and added `@eliware/log` as a direct dependency.
+- Expanded the user guides with logging, API, decoding, timestamp limits, identity, and storage details.
+- Reduced `README.md` and `AGENTS.md` to convention-required content.
+
+### Fixed
+
+- Kept the full elapsed timestamp range available when the configured epoch is at its maximum.
+- Kept IDs increasing when the clock returns a time before the epoch after the first valid ID.
 
 ## 13.0.0 — 2026-10-19
 
