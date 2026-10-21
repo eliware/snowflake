@@ -1,4 +1,4 @@
-version: "14.0"
+version: "15.0"
 description: Defines behavior and limits for the Snowflake ID generator.
 directives:
   - id: E-106.0

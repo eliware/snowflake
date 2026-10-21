@@ -1,5 +1,12 @@
 # Release Notes
 
+## 15.0.0 — 2026-10-21
+
+### Changed
+
+- Updated the package and specifications to Eliware Test 15.
+- Updated `@eliware/log` and `@eliware/test` to version 15.0.0.
+
 ## 14.0.0 — 2026-10-21
 
 ### Added
