@@ -10,6 +10,7 @@
 ### Changed
 
 - Updated the package to version 14.0.0 and aligned its specifications with Eliware Test 14.
+- Clarified the authoritative rule for first timestamps and later pre-epoch rollbacks.
 - Updated npm dependencies and added `@eliware/log` as a direct dependency.
 - Expanded the user guides with logging, API, decoding, timestamp limits, identity, and storage details.
 - Reduced `README.md` and `AGENTS.md` to convention-required content.

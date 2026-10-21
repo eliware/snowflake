@@ -12,8 +12,11 @@ directives:
       - id: E-106.0.0
         dos:
           - Validate worker and process IDs before generation.
-          - Reject timestamps before the configured epoch.
+          - Reject the first clock value when it is before the configured epoch.
+          - Apply rollback handling to a later clock value before the configured epoch.
+          - Use the last valid timestamp after a rollback.
         donts:
+          - Do not create an ID from a timestamp before the configured epoch.
           - Do not use identity values outside the supported bit range.
       - id: E-106.0.1
         dos:
