@@ -3,7 +3,8 @@
 ## Requirements
 
 Use Node.js 26 or later.
-Use one package instance in each Node.js process.
+Use native ECMAScript modules (ESM).
+Give each active generator a unique worker and process ID pair.
 
 ## Install
 
@@ -27,6 +28,10 @@ console.log(id);
 
 The command prints one decimal string. The value changes on each call.
 
+The package exports `createSnowflakeGenerator`, `generate`, `snowflake`, `constants`, and a default generator.
+The `generate`, `snowflake`, and default exports use the same generator instance.
+Use `createSnowflakeGenerator()` to set an epoch, identity, clock, or logger.
+
 ## Set generator options
 
 Pass an options object to `createSnowflakeGenerator`.
@@ -47,8 +52,9 @@ Use the same epoch for all generators in one application.
 
 Give each active generator a unique pair of `workerId` and `processId` values.
 Keep each pair unique while IDs from that pair remain in use.
-Set `processId` when some hosts or processes use the same `workerId`.
-The default process ID can repeat across hosts.
+The fields allow 32 worker values and 32 process values, for 1,024 pairs.
+The default process ID is `process.pid % 32` and can repeat across hosts.
+Set both values in deployment configuration when different hosts can create IDs at the same time.
 
 To align timestamp decoding with Discord, set `epoch` to `1420070400000n`.
 This epoch matches Discord's timestamp epoch.
@@ -69,6 +75,7 @@ The timestamp stores milliseconds since the configured epoch.
 The sequence starts at zero when the timestamp changes.
 The default epoch is `365662380000n`, or `1981-08-03T04:53:00Z`.
 The timestamp field sorts before the worker, process, and sequence fields.
+The complete ID has 64 bits.
 
 The generator combines the fields as follows:
 
@@ -106,12 +113,28 @@ console.log(timestamp.toISOString());
 
 Use the same epoch that the generator used to create the ID.
 
+Read the worker, process, and sequence fields with bit shifts and masks:
+
+```js
+const value = BigInt(id);
+const workerId = (value >> 17n) & 31n;
+const processId = (value >> 12n) & 31n;
+const sequence = value & 4095n;
+```
+
+The package does not export a decoder.
+Use the same field layout and epoch that the generator used to create the ID.
+
 ## Use a custom clock
 
 Pass `now` to set the clock source.
 Return a safe integer number or a bigint from that function.
 The value must be Unix time in milliseconds.
 Use this option for deterministic tests or a controlled clock source.
+
+The clock value must be at or after the configured epoch.
+The generator uses the last valid timestamp when the clock returns an earlier time.
+The generator increments the sequence during that rollback.
 
 ## Add structured logging
 
@@ -135,6 +158,8 @@ Records include the operation, component, and related timestamp or identity fiel
 The logger supports the `error`, `warn`, `info`, `http`, `verbose`, `debug`, and `silly` levels.
 The generator uses only levels that apply to its operations.
 Set the logger level to control which records it writes.
+The `logger` option requires `error`, `warn`, `info`, and `debug` methods.
+The `LoggerWithConfiguredLevels` TypeScript type describes the supported logger interface.
 
 ## Time and sequence limits
 
@@ -154,6 +179,24 @@ Do not convert an ID to `number`.
 JSON cannot encode a `bigint` value without custom code.
 Use a text field or an unsigned 64-bit field in a database.
 Use `BigInt(id)` for exact integer math in JavaScript.
+
+Each ID contains its generation time, worker ID, process ID, and sequence.
+Do not use an ID as a password, credential, or authentication token.
+
+## Use TypeScript
+
+The package includes TypeScript declarations for its public API.
+Import `SnowflakeGeneratorOptions`, `SnowflakeConstants`, and `LoggerWithConfiguredLevels` as types.
+
+```ts
+import { createSnowflakeGenerator, constants } from "@eliware/snowflake";
+import type { SnowflakeGeneratorOptions } from "@eliware/snowflake";
+
+const options: SnowflakeGeneratorOptions = { workerId: 3, processId: 7 };
+const generate = createSnowflakeGenerator(options);
+const id: string = generate();
+const epoch: bigint = constants.epoch;
+```
 
 ## Run the example
 

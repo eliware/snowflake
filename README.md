@@ -87,7 +87,7 @@ Read the [usage guide](docs/usage.md) for the API and option details.
 ## Packaging
 
 The package uses native ESM and includes TypeScript declarations.
-The package has no runtime dependencies.
+The package uses `@eliware/log` for optional structured logging.
 Install it from [npm](https://www.npmjs.com/package/@eliware/snowflake).
 
 ## Examples
