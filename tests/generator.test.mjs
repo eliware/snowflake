@@ -27,7 +27,7 @@ test("protects rollback and rejects invalid timestamps", () => {
   let now = 2000;
   const gen = createGenerator({ epoch: 1000, now: () => now });
   const first = BigInt(gen());
-  now = 1999;
+  now = 999;
   expect(BigInt(gen())).toBeGreaterThan(first);
   expect(() => createGenerator({ epoch: 100, now: () => 99 })()).toThrow(RangeError);
   expect(() => createGenerator({ epoch: 100n, now: () => 100n + (1n << 42n) })()).toThrow(
@@ -100,13 +100,13 @@ test("logs clock rollbacks and generation errors without values", () => {
   );
   const gen = createGenerator({ epoch: 1000n, now: () => now, logger });
   gen();
-  now = 1000;
+  now = 999;
   gen();
   expect(logger.warn).toHaveBeenCalledWith("Snowflake clock moved backward", {
     component: "snowflake",
     operation: "generate",
     event: "clock-rollback",
-    timestamp: "1000",
+    timestamp: "999",
     lastTimestamp: "1001",
   });
 

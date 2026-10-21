@@ -9,7 +9,7 @@
 | `TypeError` for `logger`                      | The logger lacks a required level method.            | Pass a logger with `error`, `warn`, `info`, and `debug` methods. |
 | `RangeError` for `epoch`                      | The epoch is outside the supported range.            | Set the epoch from zero through the timestamp limit.             |
 | `RangeError` for invalid clock number         | The clock returned a fractional or unsafe number.    | Return a safe integer number or a bigint.                        |
-| `RangeError` for time before epoch            | The clock value is lower than `epoch`.               | Set the correct epoch or set the clock source.                   |
+| `RangeError` for first time before epoch      | The first clock value is lower than `epoch`.         | Set the correct epoch or set the clock source.                   |
 | `RangeError` for timestamp capacity           | Elapsed time is greater than the 42-bit limit.       | Use a valid epoch for the required date range.                   |
 | `RangeError` for sequence overflow            | The generator created 4096 IDs at one timestamp.     | Retry when the clock returns a greater timestamp.                |
 | `TypeError` or `RangeError` during conversion | An option or clock value cannot convert to `BigInt`. | Pass an integer number or bigint value.                          |
@@ -38,13 +38,14 @@ Use one generator instance for each pair in a process.
 The generator keeps IDs in increasing order when its clock returns an earlier time.
 It uses the last valid timestamp and advances the sequence.
 It logs a warning when you provide a logger.
-The clock must return a value at or after the configured epoch.
+The first clock value must be at or after the configured epoch.
+After the first ID, a clock value lower than the epoch uses rollback handling.
 
 ## Invalid timestamps
 
 The clock must return a safe integer number or a bigint.
 The value must be Unix time in milliseconds.
-The timestamp must be at or after the configured epoch.
+The first timestamp must be at or after the configured epoch.
 The elapsed time must be 42 bits or less.
 Check the clock and epoch values when timestamp validation fails.
 

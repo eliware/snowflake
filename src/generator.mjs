@@ -26,7 +26,8 @@ export function createGenerator(options = {}) {
     if (typeof clockValue === "number" && !Number.isSafeInteger(clockValue))
       throw new RangeError("current time must be a safe integer or bigint");
     const timestamp = BigInt(clockValue);
-    if (timestamp < baseEpoch) throw new RangeError("current time must not be before epoch");
+    if (timestamp < baseEpoch && lastTimestamp < baseEpoch)
+      throw new RangeError("current time must not be before epoch");
     return timestamp;
   }
 

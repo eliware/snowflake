@@ -135,8 +135,8 @@ Return a safe integer number or a bigint from that function.
 The value must be Unix time in milliseconds.
 Use this option for deterministic tests or a controlled clock source.
 
-The clock value must be at or after the configured epoch.
-The generator uses the last valid timestamp when the clock returns an earlier time.
+The first clock value must be at or after the configured epoch.
+After the first ID, an earlier clock value uses the last valid timestamp.
 The generator increments the sequence during that rollback.
 
 ## Add structured logging
