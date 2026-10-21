@@ -8,6 +8,7 @@ export function validateGeneratorOptions({
   workerId = 0,
   processId = process.pid % 32,
   now = defaultNow,
+  logger,
 } = {}) {
   if (typeof epoch === "number" && !Number.isSafeInteger(epoch))
     throw new RangeError("epoch must be between 0 and the timestamp limit");
@@ -16,6 +17,12 @@ export function validateGeneratorOptions({
     throw new RangeError("epoch must be between 0 and the timestamp limit");
   const identity = validateIdentity(workerId, processId);
   if (typeof now !== "function") throw new TypeError("clock source must be a function");
+  if (
+    logger !== undefined &&
+    (!logger ||
+      ["error", "warn", "info", "debug"].some((level) => typeof logger[level] !== "function"))
+  )
+    throw new TypeError("logger must provide error, warn, info, and debug methods");
 
-  return { baseEpoch, ...identity, now };
+  return { baseEpoch, ...identity, now, logger };
 }

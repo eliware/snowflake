@@ -37,6 +37,7 @@ Pass an options object to `createSnowflakeGenerator`.
 | `workerId`  | number or bigint | `0`                | Worker value from `0` through `31`.              |
 | `processId` | number or bigint | `process.pid % 32` | Process value from `0` through `31`.             |
 | `now`       | function         | `Date.now`         | Function that returns Unix time in milliseconds. |
+| `logger`    | logger           | none               | Optional structured logger for generator events. |
 
 `createSnowflakeGenerator(options)` returns a function that creates IDs.
 Each call returns one decimal string.
@@ -111,6 +112,29 @@ Pass `now` to set the clock source.
 Return a safe integer number or a bigint from that function.
 The value must be Unix time in milliseconds.
 Use this option for deterministic tests or a controlled clock source.
+
+## Add structured logging
+
+Install `@eliware/log` to create a logger. Pass the logger to the generator with the `logger` option.
+The generator writes records only when you provide a logger.
+
+```js
+import { createLogger } from "@eliware/log";
+import { createSnowflakeGenerator } from "@eliware/snowflake";
+
+const logger = createLogger({ level: "debug", format: "json" });
+const generate = createSnowflakeGenerator({ logger });
+const id = generate();
+```
+
+The generator writes `info` when it starts, `debug` when it creates an ID, and `warn` when its clock returns an earlier time.
+It writes `error` when ID generation fails.
+Records do not include generated IDs, credentials, tokens, or error messages.
+
+Records include the operation, component, and related timestamp or identity fields.
+The logger supports the `error`, `warn`, `info`, `http`, `verbose`, `debug`, and `silly` levels.
+The generator uses only levels that apply to its operations.
+Set the logger level to control which records it writes.
 
 ## Time and sequence limits
 

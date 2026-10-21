@@ -9,6 +9,7 @@ test("applies defaults and normalizes generator options", () => {
     processNumber: BigInt(process.pid % 32),
   });
   expect(options.now).toBeInstanceOf(Function);
+  expect(options.now()).toEqual(expect.any(Number));
 });
 
 test("converts configured epoch and identity values", () => {
@@ -32,4 +33,5 @@ test("rejects invalid identities and clocks", () => {
     RangeError,
   );
   expect(() => validateGeneratorOptions({ now: 1 })).toThrow(TypeError);
+  expect(() => validateGeneratorOptions({ logger: {} })).toThrow(TypeError);
 });

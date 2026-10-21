@@ -1,4 +1,5 @@
 import { createGenerator } from "../src/generator.mjs";
+import { jest } from "@jest/globals";
 
 test("generates encoded IDs and sequence values", () => {
   const gen = createGenerator({ epoch: 1000n, workerId: 3, processId: 7, now: () => 1000 });
@@ -8,6 +9,10 @@ test("generates encoded IDs and sequence values", () => {
   expect((first >> 12n) & 31n).toBe(7n);
   expect(first & 4095n).toBe(0n);
   expect(second & 4095n).toBe(1n);
+});
+
+test("uses default options when no options are supplied", () => {
+  expect(createGenerator()()).toMatch(/^\d+$/);
 });
 
 test("protects rollback and rejects invalid timestamps", () => {
@@ -54,4 +59,55 @@ test("keeps generator state after a timestamp capacity error", () => {
   expect(third).toBeGreaterThan(second);
   expect(third & 4095n).toBe(2n);
   expect(first).toBeLessThan(second);
+});
+
+test("writes structured records to an injected logger", () => {
+  const logger = Object.fromEntries(
+    ["error", "warn", "info", "debug"].map((level) => [level, jest.fn()]),
+  );
+  const gen = createGenerator({ epoch: 1000n, workerId: 3, processId: 7, now: () => 1000, logger });
+
+  const id = gen();
+
+  expect(logger.info).toHaveBeenCalledWith("Snowflake generator created", {
+    component: "snowflake",
+    operation: "create-generator",
+    epoch: "1000",
+    workerId: "3",
+    processId: "7",
+  });
+  expect(logger.debug).toHaveBeenCalledWith("Snowflake ID generated", {
+    component: "snowflake",
+    operation: "generate",
+    timestamp: "1000",
+    sequence: "0",
+  });
+  expect(JSON.stringify(logger.debug.mock.calls)).not.toContain(id);
+});
+
+test("logs clock rollbacks and generation errors without values", () => {
+  let now = 1001;
+  const logger = Object.fromEntries(
+    ["error", "warn", "info", "debug"].map((level) => [level, jest.fn()]),
+  );
+  const gen = createGenerator({ epoch: 1000n, now: () => now, logger });
+  gen();
+  now = 1000;
+  gen();
+  expect(logger.warn).toHaveBeenCalledWith("Snowflake clock moved backward", {
+    component: "snowflake",
+    operation: "generate",
+    event: "clock-rollback",
+    timestamp: "1000",
+    lastTimestamp: "1001",
+  });
+
+  now = 1001;
+  for (let index = 0; index < 4094; index += 1) gen();
+  expect(() => gen()).toThrow(RangeError);
+  expect(logger.error).toHaveBeenCalledWith("Snowflake ID generation failed", {
+    component: "snowflake",
+    operation: "generate",
+    errorType: "RangeError",
+  });
 });

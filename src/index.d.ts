@@ -1,9 +1,14 @@
+import type { LoggerWithConfiguredLevels } from "@eliware/log";
+
 export interface SnowflakeGeneratorOptions {
   epoch?: number | bigint;
   workerId?: number | bigint;
   processId?: number | bigint;
   now?: () => number | bigint;
+  logger?: LoggerWithConfiguredLevels;
 }
+
+export type { LoggerWithConfiguredLevels } from "@eliware/log";
 
 export interface SnowflakeConstants {
   readonly epoch: bigint;
