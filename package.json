@@ -1,6 +1,6 @@
 {
   "name": "@eliware/snowflake",
-  "version": "15.0.0",
+  "version": "15.0.1",
   "type": "module",
   "description": "A Node.js Snowflake ID generator with BigInt support and a configurable epoch.",
   "keywords": [
@@ -42,10 +42,10 @@
     "node": ">=26"
   },
   "dependencies": {
-    "@eliware/log": "^15.0.0"
+    "@eliware/log": "^15.0.1"
   },
   "devDependencies": {
-    "@eliware/test": "^15.0.0",
+    "@eliware/test": "^15.0.1",
     "typescript": "^7.0.2"
   },
   "jest": {
